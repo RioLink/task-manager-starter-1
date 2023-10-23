@@ -22,7 +22,6 @@ const pool = mysql.createPool({
 
 const query = util.promisify(pool.query).bind(pool);
 
-// Створення таблиці tasks
 async function createTasksTable() {
   try {
     await query(
@@ -36,9 +35,6 @@ async function createTasksTable() {
 
 createTasksTable();
 
-// Контролери
-
-// Отримання всіх завдань
 const getTasks = async (req, res, next) => {
   try {
     const tasks = await query('SELECT * FROM tasks');
@@ -48,7 +44,6 @@ const getTasks = async (req, res, next) => {
   }
 };
 
-// Додавання нового завдання
 const addTask = async (req, res, next) => {
   const { name, completed } = req.body;
   if (!name) {
@@ -63,7 +58,6 @@ const addTask = async (req, res, next) => {
   }
 };
 
-// Оновлення завдання по id
 const updateTask = async (req, res, next) => {
   const taskId = req.params.id;
   const { name, completed } = req.body;
@@ -79,7 +73,6 @@ const updateTask = async (req, res, next) => {
   }
 };
 
-// Видалення завдання по id
 const deleteTask = async (req, res, next) => {
   const taskId = req.params.id;
   try {
@@ -90,7 +83,6 @@ const deleteTask = async (req, res, next) => {
   }
 };
 
-// Ваша зміна - отримання всіх завдань
 const getAllTasks = async (req, res, next) => {
   try {
     const tasks = await query('SELECT * FROM tasks');
@@ -108,7 +100,6 @@ app.post('/api/tasks', addTask);
 app.put('/api/tasks/:id', updateTask);
 app.delete('/api/tasks/:id', deleteTask);
 
-// Обробка помилок
 app.use((error, req, res, next) => {
   console.error('Помилка:', error);
   res.status(500).json({ message: 'Внутрішня помилка сервера' });
